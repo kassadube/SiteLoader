@@ -11,5 +11,7 @@ namespace SiteLoader
         public string WebsiteUrl { get; set; }
         public string WebsiteData { get; set; }
 
+        public long Timed { get; set; }
+
     }
 }
