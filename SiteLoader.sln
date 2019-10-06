@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteLoader", "SiteLoader\SiteLoader.csproj", "{BCACD4A3-63BE-4DFA-9BDF-5F534450D76B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteLoaderConsoleApp", "SiteLoaderConsoleApp\SiteLoaderConsoleApp.csproj", "{26F0E98B-71B3-4E32-BBA8-7C99A0FE4C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteLoaderLib", "SiteLoaderLib\SiteLoaderLib.csproj", "{ABB398E2-16E0-4E20-BEAE-8422255934EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{BCACD4A3-63BE-4DFA-9BDF-5F534450D76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCACD4A3-63BE-4DFA-9BDF-5F534450D76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCACD4A3-63BE-4DFA-9BDF-5F534450D76B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26F0E98B-71B3-4E32-BBA8-7C99A0FE4C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26F0E98B-71B3-4E32-BBA8-7C99A0FE4C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26F0E98B-71B3-4E32-BBA8-7C99A0FE4C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26F0E98B-71B3-4E32-BBA8-7C99A0FE4C39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

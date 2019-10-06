@@ -79,5 +79,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SiteLoaderLib\SiteLoaderLib.csproj">
+      <Project>{abb398e2-16e0-4e20-beae-8422255934ec}</Project>
+      <Name>SiteLoaderLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
