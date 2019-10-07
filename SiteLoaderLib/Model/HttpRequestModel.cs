@@ -9,8 +9,9 @@ namespace SiteLoaderLib
     {
         public string Url { get; set; }
         public string Token { get; set; }
-
         public HttpContent Content { get; set; }
         public string ContentString { get; set; }
+        //senarioId
+        public int SId { get; set; }
     }
 }

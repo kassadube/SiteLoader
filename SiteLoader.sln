@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteLoaderConsoleApp", "Sit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteLoaderLib", "SiteLoaderLib\SiteLoaderLib.csproj", "{ABB398E2-16E0-4E20-BEAE-8422255934EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSiteLoaderTest", "XSiteLoaderTest\XSiteLoaderTest.csproj", "{3975DD8E-F184-4E98-A33B-00D72E012973}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABB398E2-16E0-4E20-BEAE-8422255934EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3975DD8E-F184-4E98-A33B-00D72E012973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3975DD8E-F184-4E98-A33B-00D72E012973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3975DD8E-F184-4E98-A33B-00D72E012973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3975DD8E-F184-4E98-A33B-00D72E012973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

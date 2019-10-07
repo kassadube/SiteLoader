@@ -12,6 +12,7 @@ namespace SiteLoaderLib
         {
             StartTime = DateTime.Now;
         }
+        
         public int HttpCode { get; set; }
         public string Value { get; set; }
         public Exception Ex { get; set; }
@@ -19,5 +20,6 @@ namespace SiteLoaderLib
         public bool IsSuccess { get { return HttpCode == 200; } }
         public DateTime StartTime { get; set; }
         public Task<HttpResponseMessage>  ResTask { get; set; }
+        public int sId { get; set; }
     }
 }

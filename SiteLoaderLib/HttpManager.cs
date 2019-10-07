@@ -7,18 +7,13 @@ using System.Threading.Tasks;
 
 namespace SiteLoaderLib
 {
-    public class HttpHandler
-    {
-        
+    public class HttpManager
+    {       
 
-        public HttpHandler()
-        {
-            Client = new HttpClient();
-        }
-
-        public HttpClient Client { get; set; }
+       
         public async Task<HttpResultValue> GetResult(string url, string token = null)
         {
+            HttpClient Client = new HttpClient();
             HttpResultValue value = new HttpResultValue();
             if (!string.IsNullOrEmpty(token))
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -48,6 +43,7 @@ namespace SiteLoaderLib
 
         public Task GetResultas(string url, string token = null)
         {
+            HttpClient Client = new HttpClient();
             HttpResultValue value = new HttpResultValue();
             if (!string.IsNullOrEmpty(token))
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -74,6 +70,7 @@ namespace SiteLoaderLib
         }
         public async Task<HttpResultValue> PostResult(string url, string token, HttpContent content = null)
         {
+            HttpClient Client = new HttpClient();
             HttpResultValue value = new HttpResultValue();           
             if (!string.IsNullOrEmpty(token))
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -100,8 +97,9 @@ namespace SiteLoaderLib
             return value;
         }
 
-        public  Task<HttpResultValue> PostResultas(string url, string token, HttpContent content = null)
+        public Task<HttpResultValue> PostResultas(string url, string token, HttpContent content = null)
         {
+            HttpClient Client = new HttpClient();
             HttpResultValue value = new HttpResultValue();
             if (!string.IsNullOrEmpty(token))
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -116,6 +114,34 @@ namespace SiteLoaderLib
                 value.Ex = e;
             }            
             return Task.FromResult(value);
+        }
+
+        public async Task<HttpResultValue> PostResult(HttpRequestModel request)
+        {
+            HttpResultValue res = new HttpResultValue();
+            var watch = Stopwatch.StartNew();
+            try
+            {
+                using (HttpClient Client = new HttpClient())
+                {
+                    Client.Timeout = TimeSpan.FromMinutes(100);
+                    //HttpResponseMessage response = await Client.PostAsync(request.Url, request.Content).ConfigureAwait(false);
+                    HttpResponseMessage response = await Client.PostAsync(request.Url, new StringContent(request.ContentString, Encoding.UTF8, "application/json"));
+                    res.HttpCode = System.Convert.ToInt32( Enum.Parse(typeof(System.Net.HttpStatusCode), response.StatusCode.ToString()));
+                    res.Value = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                res.Ex = ex;
+            }
+            finally
+            {               
+                watch.Stop();
+                res.Timed = watch.ElapsedMilliseconds;
+                res.sId = request.SId;
+            }
+            return res;
         }
 
     }
