@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -51,11 +52,18 @@ namespace SiteLoaderLib.Model
         {
             HttpRequestModel model = s.GetLoginRequest();
             HttpResultValue  t = await _httpManager.PostResult(model);
+            s.User.ResultValue = t;
             if (t.IsSuccess)
             {
+                Log.Verbose(t.Value);
                 JObject obj = JObject.Parse(t.Value);
                 s.User.Token = obj.First.First.Value<string>();
             }
+            else
+            {
+                Log.Error(t.Ex, $"{t.sId}");
+            }
+            
             return t;
         }
 
@@ -63,7 +71,11 @@ namespace SiteLoaderLib.Model
         {
             return _senarios;
         }
-
+        public void RemoveAll()
+        {
+            senarioId = 1;
+            _senarios.Clear();
+        }
         public List<Task<HttpResultValue>> CreateLoginTasks()
         {
             List<Task<HttpResultValue>> tasks = new List<Task<HttpResultValue>>();
@@ -72,6 +84,19 @@ namespace SiteLoaderLib.Model
                 tasks.Add(item.CreateLoginTask(_httpManager));
             }
             return tasks;
+        }
+
+        public int GetFinishedSenarions()
+        {
+            return _senarios.FindAll(x => x.User.ResultValue != null).Count;
+        }
+        public int GetOpenSenarions()
+        {
+            return _senarios.FindAll(x => x.User.ResultValue == null).Count;
+        }
+        public int GetFailedSenarions()
+        {
+            return _senarios.FindAll(x => x.User.ResultValue != null && !x.User.ResultValue.IsSuccess).Count;
         }
     }
 

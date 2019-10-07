@@ -1,4 +1,5 @@
-﻿using SiteLoaderLib;
+﻿using Serilog;
+using SiteLoaderLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,13 +28,20 @@ namespace SiteLoaderConsoleApp
         static HttpHandler handler;
         static void Main(string[] args)
         {
+            using (var log = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger())
+            {
+                log.Information("Hello, Serilog!");
+                log.Warning("Goodbye, Serilog.");
+            }
             Console.WriteLine("Hello World!");
             handler = new HttpHandler();
             Console.WriteLine($"Before {DateTime.Now}");
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            List <Task<HttpResultValue>>  list = GetTokens(1000);
+            List <Task<HttpResultValue>>  list = GetTokens(20);
             stopWatch.Stop();
             Console.WriteLine($"after {DateTime.Now} -- {stopWatch.ElapsedMilliseconds}");
             stopWatch.Restart();

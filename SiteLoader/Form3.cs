@@ -1,9 +1,12 @@
-﻿using SiteLoaderLib;
+﻿using Serilog;
+using Serilog.Formatting.Compact;
+using SiteLoaderLib;
 using SiteLoaderLib.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,16 +18,26 @@ namespace SiteLoader
     public partial class Form3 : Form
     {
         SenarioManager manager;
+        Stopwatch _watch;
         public Form3()
         {
             InitializeComponent();
             manager = new SenarioManager();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
+            Log.Debug("Starting");
+            txtReqCount.Text = "10";
         }
 
         private async void ParallelAsync_Click(object sender, EventArgs e)
         {
+            Log.Debug("START");
             textBox1.Clear();
-            manager.AddUser("vladi", "Aa1111", count: 50);
+            _watch = Stopwatch.StartNew();
+            int.TryParse(txtReqCount.Text, out int count);
+            manager.AddUser("vladi", "Aa1111", count: count);
             //  await RunDownloadParallelAsync();
             await RunDownloadParallelAsyncTest();
         }
@@ -52,10 +65,26 @@ namespace SiteLoader
 
         private void ReportWebsiteInfo(HttpResultValue data)
         {
-           // var count = int.Parse(label1.Text) - 1;
-          //  label1.Text = count.ToString();
+             var count = manager.GetFinishedSenarions();
+            label1.Text = count.ToString();
             textBox1.AppendText($"{data.IsSuccess} downloaded: {data.sId} charecters timed: {data.Timed}{Environment.NewLine}");
-            
+            Log.Debug(($"{data.IsSuccess} downloaded: {data.sId} charecters timed: {data.Timed}"));
+            if (manager.GetOpenSenarions() == 0)
+            {
+                _watch.Stop();
+                var elspms = _watch.ElapsedMilliseconds/(decimal)1000;
+                textBox1.AppendText($"Total Execution time: {elspms}, requests: {txtReqCount.Text}, failed: {manager.GetFailedSenarions()}");
+                Log.Debug(($"Total Execution time: {elspms}, requests: {txtReqCount.Text}, failed: {manager.GetFailedSenarions()}"));
+            }
+
+        }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            Log.Debug("CLEAR");
+            manager.RemoveAll();
+            textBox1.Clear();
+
         }
     }
 }

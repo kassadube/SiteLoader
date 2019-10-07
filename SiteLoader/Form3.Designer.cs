@@ -1,4 +1,6 @@
-﻿namespace SiteLoader
+﻿using Serilog;
+
+namespace SiteLoader
 {
     partial class Form3
     {
@@ -13,6 +15,8 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            Log.Debug("DISPOSE");
+            Log.CloseAndFlush();
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -32,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ParallelAsync = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtReqCount
@@ -68,11 +73,22 @@
             this.textBox1.Size = new System.Drawing.Size(683, 308);
             this.textBox1.TabIndex = 13;
             // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(1072, 12);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.TabIndex = 18;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1159, 450);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.txtReqCount);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ParallelAsync);
@@ -90,5 +106,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button ParallelAsync;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnClear;
     }
 }

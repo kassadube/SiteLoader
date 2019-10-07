@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -134,6 +135,7 @@ namespace SiteLoaderLib
             catch (Exception ex)
             {
                 res.Ex = ex;
+                Log.Error(ex,$"URL {request.Url}");
             }
             finally
             {               
