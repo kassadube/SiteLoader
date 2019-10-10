@@ -37,6 +37,9 @@ namespace SiteLoader
             this.ParallelAsync = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnClear = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblTimeFromStart = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtReqCount
@@ -83,11 +86,42 @@ namespace SiteLoader
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(420, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Time from start";
+            this.label2.Click += new System.EventHandler(this.Label2_Click);
+            // 
+            // lblTimeFromStart
+            // 
+            this.lblTimeFromStart.AutoSize = true;
+            this.lblTimeFromStart.Location = new System.Drawing.Point(503, 5);
+            this.lblTimeFromStart.Name = "lblTimeFromStart";
+            this.lblTimeFromStart.Size = new System.Drawing.Size(13, 13);
+            this.lblTimeFromStart.TabIndex = 20;
+            this.lblTimeFromStart.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(540, 5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(24, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "sec";
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1159, 450);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblTimeFromStart);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.txtReqCount);
             this.Controls.Add(this.label1);
@@ -107,5 +141,8 @@ namespace SiteLoader
         private System.Windows.Forms.Button ParallelAsync;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblTimeFromStart;
+        private System.Windows.Forms.Label label3;
     }
 }

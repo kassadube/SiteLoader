@@ -12,6 +12,20 @@ namespace SiteLoaderLib.Model
         public List<SenarioInfo> _senarios;
         const string API_URL = "https://pointerqa-web02.pointerbi.com/fleetcore.api";
         const string FLEET_URL = "https://pointerqa-web02.pointerbi.com/fleet";
+
+        const string SiteDefinitionURL = "/api/site/definition";
+        const string FleetVehiclesURL = "/api/fleetview/vehicles?isUpdate=1&vehicles=1&alertCount=0";
+        const string AlertCountURL = "/api/fleetview/vehicles?isUpdate=1&vehicles=0&alertCount=1";
+        const string Notification2URL = "/api/notification?dateFilterId=2&MaxId=0";
+        const string Notification1URL = "/api/notification?dateFilterId=1&MaxId=0";
+        const string PolygonsURL = "/api/account/polygon";
+        const string LayersURL = "/api/account/layer";
+        const string AssetsURL = "/api/fleetview/assets";
+        const string VehiclesURL = "/api/fleetview/vehicles";
+        const string ColumnsURL = "/api/fleetview/columns";
+        const string DriverForAssignmentURL = "/api/driver/driversforassignment";
+
+
         HttpManager _httpManager;
         int senarioId = 1;
         public SenarioManager()
@@ -51,6 +65,7 @@ namespace SiteLoaderLib.Model
         public async Task<HttpResultValue> LoginSenarion(SenarioInfo s)
         {
             HttpRequestModel model = s.GetLoginRequest();
+            s.User.Started = true;
             HttpResultValue  t = await _httpManager.PostResult(model);
             s.User.ResultValue = t;
             if (t.IsSuccess)
@@ -58,12 +73,14 @@ namespace SiteLoaderLib.Model
                 Log.Verbose(t.Value);
                 JObject obj = JObject.Parse(t.Value);
                 s.User.Token = obj.First.First.Value<string>();
+                s.User.finished = true;
             }
             else
             {
                 Log.Error(t.Ex, $"{t.sId}");
+                s.User.finished = true;
             }
-            
+           
             return t;
         }
 
@@ -88,7 +105,11 @@ namespace SiteLoaderLib.Model
 
         public int GetFinishedSenarions()
         {
-            return _senarios.FindAll(x => x.User.ResultValue != null).Count;
+            return _senarios.FindAll(x => x.User.finished).Count;
+        }
+        public int GetStartedSenarions()
+        {
+            return _senarios.FindAll(x => x.User.Started).Count;
         }
         public int GetOpenSenarions()
         {
