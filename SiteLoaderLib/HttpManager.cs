@@ -130,6 +130,7 @@ namespace SiteLoaderLib
                     HttpResponseMessage response = await Client.PostAsync(request.Url, new StringContent(request.ContentString, Encoding.UTF8, "application/json"));
                     res.HttpCode = System.Convert.ToInt32( Enum.Parse(typeof(System.Net.HttpStatusCode), response.StatusCode.ToString()));
                     res.Value = await response.Content.ReadAsStringAsync();
+                   // Log.Debug($"success url {request.Url} sid {request.SId}");
                 }
             }
             catch (Exception ex)
@@ -139,6 +140,38 @@ namespace SiteLoaderLib
             }
             finally
             {               
+                watch.Stop();
+                res.Timed = watch.ElapsedMilliseconds;
+                res.sId = request.SId;
+            }
+            return res;
+        }
+
+        public async Task<HttpResultValue> GetResult(HttpRequestModel request)
+        {
+            HttpResultValue res = new HttpResultValue();
+            var watch = Stopwatch.StartNew();
+            try
+            {
+                using (HttpClient Client = new HttpClient())
+                {
+                    Client.Timeout = TimeSpan.FromMinutes(100);
+                    if (!string.IsNullOrEmpty(request.Token))
+                        Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", request.Token);
+                    HttpResponseMessage response = await Client.GetAsync(request.Url);
+                   
+                    res.HttpCode = System.Convert.ToInt32(Enum.Parse(typeof(System.Net.HttpStatusCode), response.StatusCode.ToString()));
+                    res.Value = await response.Content.ReadAsStringAsync();
+                    //Log.Debug($"success url {request.Url} sid {request.SId}");
+                }
+            }
+            catch (Exception ex)
+            {
+                res.Ex = ex;
+                Log.Error(ex, $"URL {request.Url}");
+            }
+            finally
+            {
                 watch.Stop();
                 res.Timed = watch.ElapsedMilliseconds;
                 res.sId = request.SId;

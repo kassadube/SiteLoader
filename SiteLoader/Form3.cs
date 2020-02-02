@@ -21,6 +21,7 @@ namespace SiteLoader
         SenarioManager manager;
         Stopwatch _watch;
         bool StopRunning = true;
+        bool startPeriodic = false;
         public Form3()
         {
             InitializeComponent();
@@ -39,10 +40,8 @@ namespace SiteLoader
             Log.Debug("START");
             textBox1.Clear();
             _watch = Stopwatch.StartNew();
-            int.TryParse(txtReqCount.Text, out int count);
-            manager.AddUser("vladi", "Aa1111", count: count);
-            //  await RunDownloadParallelAsync();
-          var T =  await RunDownloadParallelAsyncTest();
+           
+          var T =  await Start_async();
             while (!StopRunning)
             {
                 WaitNSeconds(1);
@@ -60,22 +59,67 @@ namespace SiteLoader
             }
         }
 
+        public async Task<HttpResultValue[]> Start_async()
+        {
+            int.TryParse(txtReqCount.Text, out int count);
+            int perUser = count / 3;
+            manager.AddUser("vladi", "Aa1111", count: perUser + (count - (perUser*3)));
+          //  manager.AddUser("vita", "Aa1111", count: perUser);
+            manager.AddUser("daniel", "Aa1111", count: perUser);
+            manager.AddUser("pisr1", "Aa111111", count: perUser);
+            //  await RunDownloadParallelAsync();
+            var t = await RunDownloadParallelAsyncTest();
+            return t;
+        }
+
+        private async void Button1_Click(object sender, EventArgs e)
+        {
+            startPeriodic = true;
+            int.TryParse(txtRedoEvery.Text, out int count);
+            while (startPeriodic)
+            {
+                var t = await Start_async();
+                WaitNSeconds(count);
+                SenarioSummery s = GetSummery();
+                txtSummary.Text = $"ALL = {s.All} Failed = {s.Failed} succeed = {s.Succeeded} Average = {s.Average}";
+
+            }
+        }
+
         private async Task RunDownloadParallelAsync()
         {
             var tasks =  manager.DoLogin();            
             var results = await Task.WhenAll(tasks);
             foreach (var item in results)
             {
-                ReportWebsiteInfo(item);
+                ReportWebsiteInfo(item, null);
             }
         }
+
+
 
         private async Task<HttpResultValue[]> RunDownloadParallelAsyncTest()
         {
             List<Task<HttpResultValue>> tasks = new List<Task<HttpResultValue>>();
-            foreach (var item in manager.GetSenarios())
+            var s = manager.GetSenarios(true);
+            foreach (var item in s)
             {
-                manager.LoginSenarion(item).ContinueWith((m) => ReportWebsiteInfo(m.Result), TaskScheduler.FromCurrentSynchronizationContext());
+                var t = manager.LoginSenarion(item);
+                t.ContinueWith((m) => ReportWebsiteInfo(m.Result, item), TaskScheduler.FromCurrentSynchronizationContext());
+                for (int i = 0; i < item.ItemsCount; i++)
+                {
+                    t.ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                /*
+                    .ContinueWith((m) => ReportWebsiteInfo( m.Result,item), TaskScheduler.FromCurrentSynchronizationContext())
+                    .ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext())
+                    .ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext())
+                    .ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext())
+                    .ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext())
+                    .ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext());
+                    */
+                tasks.Add(t);
+
                // DownloadSiteAsync(site).ContinueWith((m) => ReportWebsiteInfo(m.Result), TaskScheduler.FromCurrentSynchronizationContext());
             }
             var results = await Task.WhenAll(tasks);
@@ -86,28 +130,46 @@ namespace SiteLoader
             Log.Debug(($"Total Execution time: {elspms}, requests: {txtReqCount.Text}, failed: {manager.GetFailedSenarions()}"));
             */
         }
-
-        private void ReportWebsiteInfo(HttpResultValue data)
+        private void DoSenario(object obj, SenarioInfo s)
+        {
+            manager.RunSenarioItems(s);
+        }
+        private void ReportWebsiteInfo(HttpResultValue data, SenarioInfo s)
         {
             
-            textBox1.AppendText($"{data.IsSuccess} downloaded: {data.sId} charecters timed: {data.Timed}{Environment.NewLine}");
-            Log.Debug(($"{data.IsSuccess} downloaded: {data.sId} charecters timed: {data.Timed}"));
-            /*if (manager.GetOpenSenarions() == 0)
-            {
-                _watch.Stop();
-                var elspms = _watch.ElapsedMilliseconds/(decimal)1000;
-                textBox1.AppendText($"Total Execution time: {elspms}, requests: {txtReqCount.Text}, failed: {manager.GetFailedSenarions()}");
-                Log.Debug(($"Total Execution time: {elspms}, requests: {txtReqCount.Text}, failed: {manager.GetFailedSenarions()}"));
-            }*/
+            textBox1.AppendText($"{data.IsSuccess} downloaded: {data.sId} sid timed: {data.Timed}{Environment.NewLine}");
+            Log.Debug(($"{data.IsSuccess} downloaded: {data.sId} sid timed: {data.Timed}"));           
 
         }
 
+        private  SenarioSummery GetSummery()
+        {
+            SenarioSummery s = new SenarioSummery()
+            {
+                All = manager.GetSenarios().Count,
+                Failed = manager.GetFailedSenarions()
+
+            };
+            s.Succeeded = s.All - s.Failed;
+            s.Average = manager.GetSenarios().Where(x => x.User.finished && x.User.ResultValue != null).Average(x => x.User.ResultValue.Timed);
+            return s;
+        }
         private void BtnClear_Click(object sender, EventArgs e)
         {
             Log.Debug("CLEAR");
             manager.RemoveAll();
             textBox1.Clear();
+            
             StopRunning = true;
+
+        }
+
+        private void BtnStopPeriodic_Click(object sender, EventArgs e)
+        {
+            Log.Debug("STOP PERIODIC");
+            startPeriodic = false;
+            SenarioSummery s  = GetSummery();
+            txtSummary.Text = $"ALL = {s.All} Failed = {s.Failed} succeed = {s.Succeeded} Average = {s.Average}";
 
         }
 
@@ -122,9 +184,6 @@ namespace SiteLoader
             }
         }
 
-        private void Label2_Click(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

@@ -13,5 +13,6 @@ namespace SiteLoaderLib
         public string ContentString { get; set; }
         //senarioId
         public int SId { get; set; }
+        public int IId { get; set; }
     }
 }

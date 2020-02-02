@@ -40,6 +40,11 @@ namespace SiteLoader
             this.label2 = new System.Windows.Forms.Label();
             this.lblTimeFromStart = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtRedoEvery = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnStopPeriodic = new System.Windows.Forms.Button();
+            this.txtSummary = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtReqCount
@@ -54,9 +59,8 @@ namespace SiteLoader
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(314, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 16;
-            this.label1.Text = "label1";
             // 
             // ParallelAsync
             // 
@@ -73,7 +77,7 @@ namespace SiteLoader
             this.textBox1.Location = new System.Drawing.Point(86, 156);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(683, 308);
+            this.textBox1.Size = new System.Drawing.Size(430, 308);
             this.textBox1.TabIndex = 13;
             // 
             // btnClear
@@ -94,7 +98,6 @@ namespace SiteLoader
             this.label2.Size = new System.Drawing.Size(76, 13);
             this.label2.TabIndex = 19;
             this.label2.Text = "Time from start";
-            this.label2.Click += new System.EventHandler(this.Label2_Click);
             // 
             // lblTimeFromStart
             // 
@@ -114,11 +117,60 @@ namespace SiteLoader
             this.label3.TabIndex = 21;
             this.label3.Text = "sec";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 51);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(118, 23);
+            this.button1.TabIndex = 22;
+            this.button1.Text = "Redo every";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // txtRedoEvery
+            // 
+            this.txtRedoEvery.Location = new System.Drawing.Point(165, 51);
+            this.txtRedoEvery.Name = "txtRedoEvery";
+            this.txtRedoEvery.Size = new System.Drawing.Size(100, 20);
+            this.txtRedoEvery.TabIndex = 23;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(271, 56);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 13);
+            this.label4.TabIndex = 24;
+            this.label4.Text = "sec";
+            // 
+            // btnStopPeriodic
+            // 
+            this.btnStopPeriodic.Location = new System.Drawing.Point(317, 56);
+            this.btnStopPeriodic.Name = "btnStopPeriodic";
+            this.btnStopPeriodic.Size = new System.Drawing.Size(75, 23);
+            this.btnStopPeriodic.TabIndex = 25;
+            this.btnStopPeriodic.Text = "Stop";
+            this.btnStopPeriodic.UseVisualStyleBackColor = true;
+            this.btnStopPeriodic.Click += new System.EventHandler(this.BtnStopPeriodic_Click);
+            // 
+            // txtSummary
+            // 
+            this.txtSummary.Location = new System.Drawing.Point(623, 156);
+            this.txtSummary.Name = "txtSummary";
+            this.txtSummary.ReadOnly = true;
+            this.txtSummary.Size = new System.Drawing.Size(404, 20);
+            this.txtSummary.TabIndex = 26;
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1159, 450);
+            this.ClientSize = new System.Drawing.Size(1159, 543);
+            this.Controls.Add(this.txtSummary);
+            this.Controls.Add(this.btnStopPeriodic);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtRedoEvery);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblTimeFromStart);
             this.Controls.Add(this.label2);
@@ -144,5 +196,10 @@ namespace SiteLoader
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblTimeFromStart;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtRedoEvery;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnStopPeriodic;
+        private System.Windows.Forms.TextBox txtSummary;
     }
 }
