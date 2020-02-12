@@ -20,6 +20,7 @@ namespace SiteLoaderLib
         public bool IsSuccess { get { return HttpCode == 200; } }
         public DateTime StartTime { get; set; }
         public Task<HttpResponseMessage>  ResTask { get; set; }
+        public string Url { get; set; }
         public int sId { get; set; }
     }
 }

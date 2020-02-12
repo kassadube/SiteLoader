@@ -40,8 +40,8 @@ namespace SiteLoader
             Log.Debug("START");
             textBox1.Clear();
             _watch = Stopwatch.StartNew();
-           
-          var T =  await Start_async();
+            manager.SetApiUrl(txtApiUrl.Text);
+           var T =  await Start_async();
             while (!StopRunning)
             {
                 WaitNSeconds(1);
@@ -63,8 +63,8 @@ namespace SiteLoader
         {
             int.TryParse(txtReqCount.Text, out int count);
             int perUser = count / 3;
-            manager.AddUser("vladi", "Aa1111", count: perUser + (count - (perUser*3)));
-          //  manager.AddUser("vita", "Aa1111", count: perUser);
+            manager.AddUser("vladi", "Aa1111", count: perUser + (count - (perUser*4)));
+            manager.AddUser("vita", "Aa111111", count: perUser);
             manager.AddUser("daniel", "Aa1111", count: perUser);
             manager.AddUser("pisr1", "Aa111111", count: perUser);
             //  await RunDownloadParallelAsync();
@@ -75,19 +75,22 @@ namespace SiteLoader
         private async void Button1_Click(object sender, EventArgs e)
         {
             startPeriodic = true;
+            manager.SetApiUrl(txtApiUrl.Text);
             int.TryParse(txtRedoEvery.Text, out int count);
             while (startPeriodic)
             {
+
                 var t = await Start_async();
                 WaitNSeconds(count);
                 SenarioSummery s = GetSummery();
-                txtSummary.Text = $"ALL = {s.All} Failed = {s.Failed} succeed = {s.Succeeded} Average = {s.Average}";
+                txtSummary.Text = $"ALL = {s.All} Failed = {s.Failed} succeed = {s.Succeeded} Average = {s.Average} InQueue = {s.InQueue}";
 
             }
         }
 
         private async Task RunDownloadParallelAsync()
         {
+            manager.SetApiUrl(txtApiUrl.Text);
             var tasks =  manager.DoLogin();            
             var results = await Task.WhenAll(tasks);
             foreach (var item in results)
@@ -108,7 +111,11 @@ namespace SiteLoader
                 t.ContinueWith((m) => ReportWebsiteInfo(m.Result, item), TaskScheduler.FromCurrentSynchronizationContext());
                 for (int i = 0; i < item.ItemsCount; i++)
                 {
-                    t.ContinueWith((m) => manager.RunSenarioItems(item), TaskScheduler.FromCurrentSynchronizationContext());
+                    t.ContinueWith((m) => 
+                    manager.RunSenarioItems(item)
+                    .ContinueWith((r) => ReportWebsiteInfo(r.Result, item), TaskScheduler.FromCurrentSynchronizationContext())
+                    ,
+                    TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 /*
                     .ContinueWith((m) => ReportWebsiteInfo( m.Result,item), TaskScheduler.FromCurrentSynchronizationContext())
@@ -137,8 +144,8 @@ namespace SiteLoader
         private void ReportWebsiteInfo(HttpResultValue data, SenarioInfo s)
         {
             
-            textBox1.AppendText($"{data.IsSuccess} downloaded: {data.sId} sid timed: {data.Timed}{Environment.NewLine}");
-            Log.Debug(($"{data.IsSuccess} downloaded: {data.sId} sid timed: {data.Timed}"));           
+            textBox1.AppendText($"{data.IsSuccess} downloaded: {data.sId} sid timed: {data.Timed} url: {data.Url}{Environment.NewLine}");
+            Log.Debug(($"{data.IsSuccess} downloaded: {data.sId} sid timed: {data.Timed}  url: {data.Url}" ));           
 
         }
 
@@ -146,12 +153,13 @@ namespace SiteLoader
         {
             SenarioSummery s = new SenarioSummery()
             {
-                All = manager.GetSenarios().Count,
+                All = manager.GetRequestCount(), //manager.GetSenarios().Count,
                 Failed = manager.GetFailedSenarions()
 
             };
             s.Succeeded = s.All - s.Failed;
-            s.Average = manager.GetSenarios().Where(x => x.User.finished && x.User.ResultValue != null).Average(x => x.User.ResultValue.Timed);
+            s.Average = manager.GetAvarage();// manager.GetSenarios().Where(x => x.User.finished && x.User.ResultValue != null).Average(x => x.User.ResultValue.Timed);
+            s.InQueue = manager.GetInQueue();
             return s;
         }
         private void BtnClear_Click(object sender, EventArgs e)
@@ -169,7 +177,7 @@ namespace SiteLoader
             Log.Debug("STOP PERIODIC");
             startPeriodic = false;
             SenarioSummery s  = GetSummery();
-            txtSummary.Text = $"ALL = {s.All} Failed = {s.Failed} succeed = {s.Succeeded} Average = {s.Average}";
+            txtSummary.Text = $"ALL = {s.All} Failed = {s.Failed} succeed = {s.Succeeded} Average = {s.Average} InQueue = {s.InQueue}";
 
         }
 
@@ -184,6 +192,9 @@ namespace SiteLoader
             }
         }
 
-       
+        private void txtApiUrl_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

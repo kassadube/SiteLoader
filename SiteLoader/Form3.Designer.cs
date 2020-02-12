@@ -45,6 +45,7 @@ namespace SiteLoader
             this.label4 = new System.Windows.Forms.Label();
             this.btnStopPeriodic = new System.Windows.Forms.Button();
             this.txtSummary = new System.Windows.Forms.TextBox();
+            this.txtApiUrl = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtReqCount
@@ -74,15 +75,17 @@ namespace SiteLoader
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(86, 156);
+            this.textBox1.Location = new System.Drawing.Point(12, 156);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(430, 308);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(884, 308);
             this.textBox1.TabIndex = 13;
+            this.textBox1.WordWrap = false;
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(1072, 12);
+            this.btnClear.Location = new System.Drawing.Point(830, 5);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 18;
@@ -155,17 +158,27 @@ namespace SiteLoader
             // 
             // txtSummary
             // 
-            this.txtSummary.Location = new System.Drawing.Point(623, 156);
+            this.txtSummary.Location = new System.Drawing.Point(317, 130);
             this.txtSummary.Name = "txtSummary";
             this.txtSummary.ReadOnly = true;
-            this.txtSummary.Size = new System.Drawing.Size(404, 20);
+            this.txtSummary.Size = new System.Drawing.Size(579, 20);
             this.txtSummary.TabIndex = 26;
+            // 
+            // txtApiUrl
+            // 
+            this.txtApiUrl.Location = new System.Drawing.Point(456, 56);
+            this.txtApiUrl.Name = "txtApiUrl";
+            this.txtApiUrl.Size = new System.Drawing.Size(402, 20);
+            this.txtApiUrl.TabIndex = 27;
+            this.txtApiUrl.Text = "http://pointerqa-web03.northeurope.cloudapp.azure.com/fleetcore.api";
+            this.txtApiUrl.TextChanged += new System.EventHandler(this.txtApiUrl_TextChanged);
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1159, 543);
+            this.ClientSize = new System.Drawing.Size(918, 543);
+            this.Controls.Add(this.txtApiUrl);
             this.Controls.Add(this.txtSummary);
             this.Controls.Add(this.btnStopPeriodic);
             this.Controls.Add(this.label4);
@@ -201,5 +214,6 @@ namespace SiteLoader
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnStopPeriodic;
         private System.Windows.Forms.TextBox txtSummary;
+        private System.Windows.Forms.TextBox txtApiUrl;
     }
 }

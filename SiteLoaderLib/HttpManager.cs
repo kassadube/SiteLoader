@@ -126,6 +126,8 @@ namespace SiteLoaderLib
                 using (HttpClient Client = new HttpClient())
                 {
                     Client.Timeout = TimeSpan.FromMinutes(100);
+                    if (!string.IsNullOrEmpty(request.Token))
+                        Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", request.Token);
                     //HttpResponseMessage response = await Client.PostAsync(request.Url, request.Content).ConfigureAwait(false);
                     HttpResponseMessage response = await Client.PostAsync(request.Url, new StringContent(request.ContentString, Encoding.UTF8, "application/json"));
                     res.HttpCode = System.Convert.ToInt32( Enum.Parse(typeof(System.Net.HttpStatusCode), response.StatusCode.ToString()));
@@ -143,6 +145,7 @@ namespace SiteLoaderLib
                 watch.Stop();
                 res.Timed = watch.ElapsedMilliseconds;
                 res.sId = request.SId;
+                res.Url = request.Url;
             }
             return res;
         }
@@ -155,6 +158,7 @@ namespace SiteLoaderLib
             {
                 using (HttpClient Client = new HttpClient())
                 {
+                    
                     Client.Timeout = TimeSpan.FromMinutes(100);
                     if (!string.IsNullOrEmpty(request.Token))
                         Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", request.Token);
@@ -175,6 +179,8 @@ namespace SiteLoaderLib
                 watch.Stop();
                 res.Timed = watch.ElapsedMilliseconds;
                 res.sId = request.SId;
+                res.Url = request.Url;
+
             }
             return res;
         }
