@@ -62,11 +62,11 @@ namespace SiteLoader
         public async Task<HttpResultValue[]> Start_async()
         {
             int.TryParse(txtReqCount.Text, out int count);
-            int perUser = count / 3;
-            manager.AddUser("vladi", "Aa1111", count: perUser + (count - (perUser*4)));
-            manager.AddUser("vita", "Aa111111", count: perUser);
-            manager.AddUser("daniel", "Aa1111", count: perUser);
-            manager.AddUser("pisr1", "Aa111111", count: perUser);
+            int perUser = count / 4;
+            manager.AddUser("JT Sete", "Apple195", count: perUser + (count - (perUser*4)));
+            manager.AddUser("ZuluT", "Fords324", count: perUser);
+            manager.AddUser("T Moyo", "Focus015", count: perUser);
+            manager.AddUser("Kamz", "Pointer1", count: perUser);
             //  await RunDownloadParallelAsync();
             var t = await RunDownloadParallelAsyncTest();
             return t;

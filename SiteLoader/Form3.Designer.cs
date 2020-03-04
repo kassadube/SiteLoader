@@ -170,7 +170,7 @@ namespace SiteLoader
             this.txtApiUrl.Name = "txtApiUrl";
             this.txtApiUrl.Size = new System.Drawing.Size(402, 20);
             this.txtApiUrl.TabIndex = 27;
-            this.txtApiUrl.Text = "http://pointerqa-web03.northeurope.cloudapp.azure.com/fleetcore.api";
+            this.txtApiUrl.Text = "http://webqa-staging02.pointerbi.com/fleetcore.api";
             this.txtApiUrl.TextChanged += new System.EventHandler(this.txtApiUrl_TextChanged);
             // 
             // Form3

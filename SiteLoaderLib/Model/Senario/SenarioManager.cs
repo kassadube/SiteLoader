@@ -14,8 +14,10 @@ namespace SiteLoaderLib.Model
         public List<SenarioInfo> _senarios;
         // string API_URL = "https://pointerqa-web02.pointerbi.com/fleetcore.api";
      //   const string FLEET_URL = "https://pointerqa-web02.pointerbi.com/fleet";
-        string API_URL = "http://pointerqa-web03.northeurope.cloudapp.azure.com/fleetcore.api";
-        const string FLEET_URL = "http://pointerqa-web03.northeurope.cloudapp.azure.com/fleet";
+     //   string API_URL = "http://pointerqa-web03.northeurope.cloudapp.azure.com/fleetcore.api";
+     //   const string FLEET_URL = "http://pointerqa-web03.northeurope.cloudapp.azure.com/fleet";
+          string API_URL = "http://webqa-staging02.pointerbi.com/fleetcore.api";
+        const string FLEET_URL = "http://webqa-staging02.pointerbi.com/fleet";
 
         const string SiteDefinitionURL = "/api/site/definition";
         const string FleetVehiclesURL = "/api/fleetview/vehicles?isUpdate=1&vehicles=1&alertCount=0";
